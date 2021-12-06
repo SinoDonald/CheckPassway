@@ -75,11 +75,13 @@ namespace CheckPassway
                             Line di_line = di.Curve as Line;
                             XYZ middle_point = di_line.Origin;
                             Room temp_room = m_connect.RevitDoc.Document.GetRoomAtPoint(middle_point);
-                            if (temp_room != null)
+                            /*if (temp_room != null)
                             {
                                 check_dimensionList.Add(dimension);
                                 check_roomList.Add(temp_room);
-                            }
+                            }*/
+                            check_dimensionList.Add(dimension);
+                            check_roomList.Add(temp_room);
                         }
                     }
                 }
@@ -183,8 +185,16 @@ namespace CheckPassway
                 {
                     Element check_di = check_dimensionList[i];
                     Element check_room = check_roomList[i];
-                    string[] element_list_value = { check_di.Id.ToString(), check_room.Name, check_di.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsValueString() };
-                    dimension_listView.Items.Add(new ListViewItem(element_list_value));
+                    if (check_room == null)
+                    {
+                        string[] element_list_value = { check_di.Id.ToString(), "無", check_di.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsValueString() };
+                        dimension_listView.Items.Add(new ListViewItem(element_list_value));
+                    }
+                    else
+                    {
+                        string[] element_list_value = { check_di.Id.ToString(), check_room.Name, check_di.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsValueString() };
+                        dimension_listView.Items.Add(new ListViewItem(element_list_value));
+                    }
                 }
                 description_label.Location = new System.Drawing.Point(description_label.Location.X, option_label.Location.Y + 70);
                 selection_button.Location = new System.Drawing.Point(description_label.Location.X + 282, option_label.Location.Y + 58);
@@ -359,7 +369,8 @@ namespace CheckPassway
             {
                 client = new HttpClient();
                 //client.BaseAddress = new Uri("http://127.0.0.1:8000/");
-                client.BaseAddress = new Uri("http://bimdata.secltd/");
+                client.BaseAddress = new Uri("https://bimdata.sinotech.com.tw/");
+                //client.BaseAddress = new Uri("http://bimdata.secltd/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 var headerValue = new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json");
                 client.DefaultRequestHeaders.Accept.Add(headerValue);

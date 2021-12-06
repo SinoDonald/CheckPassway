@@ -18,7 +18,7 @@ namespace CheckPassway
         {
             IExternalEventHandler handler_check_dimension_event = new CheckDimensionExternalEvent();
             ExternalEvent check_dimension_exEvent = ExternalEvent.Create(handler_check_dimension_event);
-            commandData.Application.Idling += Application_Idling;
+            //commandData.Application.Idling += Application_Idling;
             RevitDocument m_connect = new RevitDocument(commandData.Application);
             PasswayWidth passway = new PasswayWidth(m_connect, check_dimension_exEvent);
             passway.Show();
