@@ -68,8 +68,8 @@ namespace CheckPassway
                 {
                     if (dimension.Name == "Sino_dimension")
                     {
-                        double total_length = Convert.ToDouble(dimension.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsValueString());
-                        if (total_length < Convert.ToDouble(passway_width_textBox.Text))
+                        double total_length = Convert.ToDouble(dimension.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsDouble());
+                        if (total_length < ((Convert.ToDouble(passway_width_textBox.Text)) / 304.8 * 1000))
                         {
                             Dimension di = dimension as Dimension;
                             Line di_line = di.Curve as Line;
@@ -160,8 +160,8 @@ namespace CheckPassway
                                         }
                                         if (result == true)
                                         {
-                                            double total_length = Convert.ToDouble(di.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsValueString());
-                                            if (total_length < Convert.ToDouble(passway_width_textBox.Text))
+                                            double total_length = di.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsDouble();
+                                            if (total_length < ((Convert.ToDouble(passway_width_textBox.Text)) / 304.8 * 1000))
                                             {
                                                 check_dimensionList.Add(di);
                                                 check_roomList.Add(r);
@@ -187,12 +187,12 @@ namespace CheckPassway
                     Element check_room = check_roomList[i];
                     if (check_room == null)
                     {
-                        string[] element_list_value = { check_di.Id.ToString(), "無", check_di.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsValueString() };
+                        string[] element_list_value = { check_di.Id.ToString(), "無", (Math.Round((check_di.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsDouble()) * 304.8 * 0.001, 2)).ToString() };
                         dimension_listView.Items.Add(new ListViewItem(element_list_value));
                     }
                     else
                     {
-                        string[] element_list_value = { check_di.Id.ToString(), check_room.Name, check_di.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsValueString() };
+                        string[] element_list_value = { check_di.Id.ToString(), check_room.Name, (Math.Round((check_di.get_Parameter(BuiltInParameter.DIM_TOTAL_LENGTH).AsDouble()) * 304.8 * 0.001, 2)).ToString() };
                         dimension_listView.Items.Add(new ListViewItem(element_list_value));
                     }
                 }
